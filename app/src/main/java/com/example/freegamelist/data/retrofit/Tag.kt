@@ -31,5 +31,6 @@ enum class Tag {
     military,
     flight,
     horror,
-    mmorts
+    mmorts,
+    all
 }

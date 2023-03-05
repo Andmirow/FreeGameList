@@ -1,18 +1,25 @@
-package com.example.freegamelist.domain
+package com.example.freegamelist.data.room
 
-import android.os.Parcelable
+import android.graphics.Bitmap
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.freegamelist.data.retrofit.GameListModel.MinimumSystemRequirements
 import com.example.freegamelist.data.retrofit.GameListModel.Screenshot
-import kotlinx.android.parcel.Parcelize
+import com.example.freegamelist.data.retrofit.Platform
+import com.example.freegamelist.domain.GamesInterface
 
-@Parcelize
-data class GameBl(
+@Entity(tableName = "games")
+data class GameDbModel(
+
+    @PrimaryKey(autoGenerate = true)
+    override val idRoom : Int,
+
     override val description: String?,
     override val developer: String,
     override val freetogame_profile_url: String,
     override val game_url: String,
     override val genre: String,
     override val idRetrofit: Int,
-    override val idRoom : Int,
     override val platform: String,
     override val publisher: String,
     override val release_date: String,
@@ -21,17 +28,16 @@ data class GameBl(
     override val status: String?,
     override val thumbnail: String,
     override val title: String,
+    override val notes : String,
+    override var isFavorite : Boolean,
     override val graphics: String,
     override val memory: String,
     override val os: String,
     override val processor: String,
-    override  val storage: String,
-    override val notes : String,
-    override  var isFavorite : Boolean
+    override val storage: String
+) : GamesInterface{
 
-): Parcelable,GamesInterface{
-
-    constructor( game : GamesInterface, notes : String,isFavorite : Boolean ) : this(
+    constructor( game : GamesInterface) : this(
         idRoom = game.idRoom,
         description = game.description,
         developer = game.developer,
@@ -47,13 +53,14 @@ data class GameBl(
         status = game.status,
         thumbnail = game.thumbnail,
         title = game.title,
-        notes = notes,
-        isFavorite = isFavorite,
+        notes = game.notes,
+        isFavorite = game.isFavorite,
         graphics = game.graphics,
         memory = game.memory,
         os = game.os,
         processor = game.processor,
         storage = game.storage
     )
+
 
 }

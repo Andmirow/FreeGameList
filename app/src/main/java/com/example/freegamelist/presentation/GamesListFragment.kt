@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.freegamelist.databinding.FragmentListGameBinding
 import com.example.freegamelist.domain.GameBl
 import com.example.freegamelist.domain.MyApp
-import com.example.freegamelist.presentation.recycler_view_tools.FilmAdapter
+import com.example.freegamelist.presentation.recycler_view_tools.GameAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class GamesListFragment : Fragment() {
 
@@ -40,6 +43,7 @@ class GamesListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        observeLaunches()
         viewModel.fetchList((activity?.application as MyApp).gameApi)
     }
 
@@ -64,12 +68,18 @@ class GamesListFragment : Fragment() {
 //            MovieFilter.isPreserved = isChecked
 //            viewModel.fetchList((activity?.application as FilmApp).filmApi)
         }
+
+
+
+
+
+
     }
 
     private fun setRecyclerView(){
         val recycler = binding.rvGameList
         recycler.layoutManager = GridLayoutManager(activity?.applicationContext, 4)
-        val adapter = FilmAdapter(this::openGameCard,this::deleteGame)
+        val adapter = GameAdapter(this::openGameCard,this::deleteGame)
         recycler.adapter = adapter
         val dividerItemDecorationVERTICAL = DividerItemDecoration(recycler.context, GridLayoutManager.VERTICAL)
         val dividerItemDecorationHORIZONTAL = DividerItemDecoration(recycler.context, GridLayoutManager.HORIZONTAL)
@@ -87,6 +97,17 @@ class GamesListFragment : Fragment() {
     private fun deleteGame(game : GameBl){
         //viewModel.deleteFilm(film)
     }
+
+
+    private fun observeLaunches() {
+        lifecycleScope.launch {
+            viewModel.launchesFlow.collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
+
+
 
 
 

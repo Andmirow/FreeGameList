@@ -9,16 +9,16 @@ import com.example.freegamelist.databinding.ItemGameCardBinding
 import com.example.freegamelist.domain.GameBl
 
 
-class FilmAdapter(private val onClickListener : ((GameBl)-> Unit), private val onLongClickListener : ((GameBl)-> Unit)) : ListAdapter<GameBl, FilmViewHolder>(FilmListDiffItemCallBack()) {
+class GameAdapter(private val onClickListener : ((GameBl)-> Unit), private val onLongClickListener : ((GameBl)-> Unit)) : ListAdapter<GameBl, GameViewHolder>(GameListDiffItemCallBack()) {
 
     private lateinit var binding : ItemGameCardBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         binding = ItemGameCardBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return FilmViewHolder(binding)
+        return GameViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val game = getItem(position)
         when (binding){
             is ItemGameCardBinding -> {

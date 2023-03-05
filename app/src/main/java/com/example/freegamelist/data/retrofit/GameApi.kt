@@ -9,27 +9,29 @@ import retrofit2.http.Query
 interface GameApi {
 
     @GET("./games")
-    fun getGamesList(
+    suspend fun getGamesList(
         @Query("platform") platform : String,
-        @Query("category") category : String,
-        @Query("sort-by") sortBy : String
-    ): Single<List<GameListItem>>
+        @Query("category") category : String
+    ): List<GameListItem>
+
 
     @GET("./games")
-    fun getGamesList(): Single<List<GameListItem>>
+    suspend fun getGamesList( @Query("platform") platform : Platform): List<GameListItem>
 
+    @GET("./games")
+    suspend fun getGamesList(): List<GameListItem>
 
     @GET("./game")
-    fun getGameInfo(
+    suspend fun getGameInfo(
         @Query("id") id : String
-    ): Single<GameInfo>
+    ): GameInfo
 
 
     @GET("./filter")
-    fun getGamesPersonalizedList(
+    suspend fun getGamesPersonalizedList(
         @Query("platform") platform : String,
         @Query("tag") tag : String
-    ): Single<List<GameListItem>>
+    ): List<GameListItem>
 
 
 }

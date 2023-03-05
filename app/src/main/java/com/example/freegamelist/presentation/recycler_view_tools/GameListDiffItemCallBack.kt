@@ -5,7 +5,7 @@ import com.example.freegamelist.domain.GameBl
 
 
 
-class FilmListDiffItemCallBack : DiffUtil.ItemCallback<GameBl>() {
+class GameListDiffItemCallBack : DiffUtil.ItemCallback<GameBl>() {
 
     override fun areItemsTheSame(oldItem: GameBl, newItem: GameBl): Boolean {
         return oldItem.idRetrofit == newItem.idRetrofit && oldItem.title == newItem.title
