@@ -1,10 +1,13 @@
 package com.example.freegamelist.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.freegamelist.data.room.GameListDao
+import com.example.freegamelist.domain.GameBl
 import com.example.freegamelist.domain.GameRepository
 import com.example.freegamelist.domain.GamesInterface
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +17,7 @@ import javax.inject.Singleton
 
 @ExperimentalPagingApi
 @Singleton
-class DefaultGameRepository @Inject constructor(
+class GameRepositoryImpl @Inject constructor(
     private val gameListDao: GameListDao,
     private val gameRemoteMediator: GameRemoteMediator.Factory
 ) : GameRepository {
@@ -35,6 +38,20 @@ class DefaultGameRepository @Inject constructor(
 //                    launchRoomEntity
 //                }
 //            }
+    }
+
+    override suspend fun getFavoriteGames(): LiveData<List<GamesInterface>>? {
+        return null
+//        return MediatorLiveData<List<GamesInterface>>().apply {
+//            this.addSource(gameListDao.getListFavoriteGames()){
+//                value = it.?map {  GameBl(it) }
+//            }
+//        }
+        //return gameListDao.getListFavoriteGames()
+    }
+
+    override suspend fun addGame(game: GamesInterface) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun makeNoties(game: GamesInterface) {

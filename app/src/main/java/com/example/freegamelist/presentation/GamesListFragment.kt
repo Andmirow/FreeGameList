@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.map
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.freegamelist.databinding.FragmentListGameBinding
@@ -23,6 +24,7 @@ class GamesListFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding : FragmentListGameBinding
     private lateinit var fragmentControl : FragmentControl
+    private lateinit var adapter : GameAdapter
 
     companion object {
         @JvmStatic
@@ -43,8 +45,8 @@ class GamesListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        observeLaunches()
-        viewModel.fetchList((activity?.application as MyApp).gameApi)
+
+        //viewModel.fetchList((activity?.application as MyApp).gameApi)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -54,8 +56,10 @@ class GamesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getList()
         setRecyclerView()
         setListener()
+        observeLaunches()
     }
 
 
@@ -101,9 +105,11 @@ class GamesListFragment : Fragment() {
 
     private fun observeLaunches() {
         lifecycleScope.launch {
-            viewModel.launchesFlow.collectLatest {
-                adapter.submitData(it)
-            }
+           // viewModel.getList()
+            adapter.submitList(viewModel.getList())
+//            viewModel.gamesListFlow.collectLatest {
+//                adapter.submitList(it)
+//            }
         }
     }
 

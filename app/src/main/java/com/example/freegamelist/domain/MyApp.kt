@@ -5,6 +5,7 @@ import com.example.freegamelist.data.retrofit.GameApi
 import com.example.freegamelist.di.DaggerGameComponent
 import javax.inject.Inject
 
+
 class MyApp : Application() {
 
     @Inject

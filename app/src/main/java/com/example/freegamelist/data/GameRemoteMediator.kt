@@ -26,21 +26,23 @@ class GameRemoteMediator @AssistedInject constructor(
 
     override suspend fun load(loadType: LoadType, state: PagingState<String, GameDbModel>): MediatorResult {
 
-        pageIndex = getPageIndex(loadType) ?:
-                return MediatorResult.Success(endOfPaginationReached = true)
+        if (loadType == LoadType.REFRESH){
+            return MediatorResult.Success(endOfPaginationReached = true)
+        }
 
         val limit = state.config.pageSize
-        val offset = pageIndex * limit
+
+//        val offset = pageIndex * limit
 
         return try {
             val gamesList = fetchGames(platform, genre)
             if (loadType == LoadType.REFRESH) {
-                GamesDao.refresh(platform, gamesList)
+                GamesDao.refresh(platform.toString(), gamesList)
             } else {
-                GamesDao.save(games)
+                GamesDao.save(gamesList)
             }
             MediatorResult.Success(
-                endOfPaginationReached = games.size < limit
+                endOfPaginationReached = gamesList.size < limit
             )
         } catch (e: Exception) {
             MediatorResult.Error(e)
@@ -48,17 +50,10 @@ class GameRemoteMediator @AssistedInject constructor(
 
     }
 
-    private fun getPageIndex(loadType: LoadType): Int? {
-        pageIndex = when (loadType) {
-            LoadType.REFRESH -> 0
-            LoadType.PREPEND -> return null
-            LoadType.APPEND -> ++pageIndex
-        }
-        return pageIndex
-    }
+
 
     private suspend fun fetchGames(platform: Platform?,genre: Tag?): List<GameDbModel> {
-        return gamesApi.getGamesList()
+        return gamesApi.getGamesList(platform.toString(),genre.toString())
             .map { GameDbModel(it) }
     }
 

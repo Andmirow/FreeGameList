@@ -1,5 +1,6 @@
 package com.example.freegamelist.data.room
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.freegamelist.data.retrofit.Platform
@@ -36,6 +37,10 @@ interface GameListDao {
     suspend fun save(gameDbModel: GameDbModel) {
         save(listOf(gameDbModel))
     }
+
+    @Query("SELECT * FROM games WHERE  isFavorite = 'true'")
+    suspend fun getListFavoriteGames() : LiveData<List<GameDbModel>>
+
 
     @Query("DELETE FROM games WHERE :platform IS NULL OR platform = :platform AND isFavorite = 'false'")
     suspend fun clear(platform : String?)

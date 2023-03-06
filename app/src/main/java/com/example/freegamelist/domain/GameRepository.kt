@@ -10,7 +10,7 @@ interface GameRepository {
     fun getGames(platform: String? = null): Flow<PagingData<GamesInterface>>
 
 
-    suspend fun getFavoriteGames() : LiveData<List<GamesInterface>>
+    suspend fun getFavoriteGames() : LiveData<List<GamesInterface>>?
     suspend fun addGame(game : GamesInterface)
 
     suspend fun makeNoties(game: GamesInterface)
